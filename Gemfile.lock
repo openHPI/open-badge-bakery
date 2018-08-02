@@ -98,6 +98,8 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2018.5)
+      tzinfo (>= 1.0.0)
     webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -119,6 +121,7 @@ DEPENDENCIES
   rspec-rails
   spring
   spring-watcher-listen (~> 2.0.0)
+  tzinfo-data
   webmock
 
 RUBY VERSION

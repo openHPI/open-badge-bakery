@@ -25,18 +25,9 @@ module OpenBadgeBakery
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    rsa_key = OpenSSL::PKey::RSA.new(2048)
-    config.bakery = {
-      default: {
-        signing: {
-          algorithm: 'RS256',
-          private_key: rsa_key.to_pem,
-          public_key: rsa_key.public_key.to_pem
-        },
-        images: {
-          base_path: Rails.root.join('tmp')
-        }
-      }
-    }
+
+    initializer 'bakery-config' do |app|
+      app.config.bakery = app.config_for(:bakery).with_indifferent_access
+    end
   end
 end

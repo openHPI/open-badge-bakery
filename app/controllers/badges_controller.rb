@@ -28,14 +28,14 @@ class BadgesController < ApplicationController
     errors = []
     errors << 'assertion required' unless params[:assertion]
     errors << 'imagePath or imageURL required' unless params[:imagePath] || params[:imageURL]
-    if params[:flavor] && !flavors.include?(params[:flavor].to_sym)
+    if params[:flavor] && !flavors.include?(params[:flavor])
       errors << "unknown flavor: #{params[:flavor]}" 
     end
     render status: 422, json: { errors: errors } if errors.any? 
   end 
 
   def bakery_config
-    @bakery_config ||= Rails.configuration.bakery[bake_params[:flavor]&.to_sym] \
+    @bakery_config ||= Rails.configuration.bakery[bake_params[:flavor]] \
                    || Rails.configuration.bakery[:default]
   end
 

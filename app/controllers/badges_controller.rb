@@ -46,8 +46,8 @@ class BadgesController < ApplicationController
   def badge_template_blob
     if bake_params[:imageURL]
       return Rails.cache.fetch(bake_params[:imageURL], expires_in: 1.hour) do
-        require 'open-uri'
-        open(bake_params[:imageURL]).read
+        Rails.logger.info "Loading template from #{bake_params[:imageURL]}"
+        Typhoeus.get(bake_params[:imageURL]).body
       end
     end
 

@@ -12,6 +12,7 @@ gem 'railties', rails_version
 # Utilities
 gem 'chunky_png'
 gem 'jwt'
+gem 'typhoeus'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

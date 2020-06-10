@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.1'
-
 # Rails
 rails_version = '~> 5.2'
 gem 'activesupport', rails_version

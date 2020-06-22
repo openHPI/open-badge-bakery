@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "action_controller/railtie"
-require "action_view/railtie"
-require "rails/test_unit/railtie"
+require 'action_controller/railtie'
+require 'action_view/railtie'
+require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,7 +26,6 @@ module OpenBadgeBakery
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-
 
     initializer 'bakery-config' do |app|
       app.config.bakery = app.config_for(:bakery).with_indifferent_access

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwt'
 
 def verify_assertion(signed_assertion:, algorithm:, public_key:)
@@ -8,6 +10,9 @@ def verify_assertion(signed_assertion:, algorithm:, public_key:)
     algorithm: algorithm
   )
   true
-rescue Exception => e
+# there are too many openssl or jwt exception types to catch separately
+# rubocop:disable Lint/RescueException
+rescue Exception
   false
-end 
+  # rubocop:enable Lint/RescueException
+end

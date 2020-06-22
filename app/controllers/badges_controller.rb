@@ -1,5 +1,6 @@
-class BadgesController < ApplicationController
+# frozen_string_literal: true
 
+class BadgesController < ApplicationController
   before_action :check_params
 
   def create
@@ -12,7 +13,7 @@ class BadgesController < ApplicationController
     )
 
     send_data(bakery.bake, type: 'image/png', dispositon: 'inline')
-  end 
+  end
 
   private
 
@@ -24,15 +25,15 @@ class BadgesController < ApplicationController
     params[:assertion].to_unsafe_h
   end
 
+  # rubocop:disable Metrics/AbcSize
   def check_params
     errors = []
     errors << 'assertion required' unless params[:assertion]
     errors << 'imagePath or imageURL required' unless params[:imagePath] || params[:imageURL]
-    if params[:flavor] && !flavors.include?(params[:flavor])
-      errors << "unknown flavor: #{params[:flavor]}" 
-    end
-    render status: 422, json: { errors: errors } if errors.any? 
-  end 
+    errors << "unknown flavor: #{params[:flavor]}" if params[:flavor] && !flavors.include?(params[:flavor])
+    render status: 422, json: { errors: errors } if errors.any?
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def bakery_config
     @bakery_config ||= Rails.configuration.bakery[bake_params[:flavor]] \
@@ -41,8 +42,9 @@ class BadgesController < ApplicationController
 
   def flavors
     Rails.configuration.bakery.keys
-  end 
+  end
 
+  # rubocop:disable Metrics/AbcSize
   def badge_template_blob
     if bake_params[:imageURL]
       return Rails.cache.fetch(bake_params[:imageURL], expires_in: 1.hour) do
@@ -54,4 +56,5 @@ class BadgesController < ApplicationController
     template_path = File.join(bakery_config[:images][:base_path], bake_params[:imagePath])
     File.read(template_path)
   end
+  # rubocop:enable Metrics/AbcSize
 end

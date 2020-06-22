@@ -1,6 +1,13 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'fileutils'
+
+# make rubocop happy about 'include is used at the top level. Use inside class or module.'
+# this file is used on command line only
+# rubocop:disable Style/MixinUsage
 include FileUtils
+# rubocop:enable Style/MixinUsage
 
 # path to your application root.
 APP_ROOT = File.expand_path('..', __dir__)

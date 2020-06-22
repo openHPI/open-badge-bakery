@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwt'
 require 'chunky_png'
 
@@ -19,6 +21,8 @@ class Bakery
     )
   end
 
+  # there are many openssl or jwt exceptions
+
   def verify_assertion
     return false unless signed_assertion
 
@@ -29,10 +33,14 @@ class Bakery
       algorithm: config[:algorithm]
     )
     true
+
+  # there are too many openssl or jwt exception types to catch separately
+  # rubocop:disable Lint/RescueException
   rescue Exception => e
     logger.debug("VERIFICATION ERROR: #{e.message}")
     false
-  end 
+    # rubocop:enable Lint/RescueException
+  end
 
   def decode_assertion
     return unless signed_assertion
@@ -43,7 +51,7 @@ class Bakery
       false,
       algorithm: config[:algorithm]
     )&.first
-  end  
+  end
 
   def bake
     encode_assertion unless signed_assertion

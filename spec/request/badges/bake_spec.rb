@@ -1,22 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'chunky_png'
 
 RSpec.describe 'bake', type: :request do
-
-  let(:headers) { {'Content-Type' => 'application/json'} }
+  let(:headers) { { 'Content-Type' => 'application/json' } }
   let(:payload) { {} }
 
-  subject { post "/bake", params: payload, headers: headers, as: :json }
+  subject { post '/bake', params: payload, headers: headers, as: :json }
   let(:json) { JSON.parse(subject.body) }
 
   before do
     Rails.configuration.bakery[:default][:images][:base_path] = Rails.root.join('spec/files')
   end
 
-  shared_examples 'properly baked badge' do |flavor|    
+  shared_examples 'properly baked badge' do |flavor|
     it 'responds with png image' do
       expect(subject).to be_successful
-      expect(subject.headers["Content-Type"]).to eq 'image/png'
+      expect(subject.headers['Content-Type']).to eq 'image/png'
     end
 
     it 'bakes the assertion into the png' do
@@ -25,7 +26,7 @@ RSpec.describe 'bake', type: :request do
 
       # extract and verify signed assertion
       ds = ChunkyPNG::Datastream.from_blob(badge)
-      signed_assertion = ds.other_chunks.select{|c| c.type == 'iTXt' }.first.text
+      signed_assertion = ds.other_chunks.select { |c| c.type == 'iTXt' }.first.text
 
       verify_params = {
         signed_assertion: signed_assertion,
@@ -35,7 +36,7 @@ RSpec.describe 'bake', type: :request do
 
       expect(verify_assertion(**verify_params)).to be_truthy
     end
-  end  
+  end
 
   describe 'response' do
     subject { super(); response }
@@ -71,7 +72,7 @@ RSpec.describe 'bake', type: :request do
             url: 'http://issuersite.org/public-key.pem',
             type: 'signed'
           },
-          issuedOn: 1403120715
+          issuedOn: 1_403_120_715
         }
       end
       let(:image_path) { 'sample_badge_template.png' }
@@ -110,12 +111,12 @@ RSpec.describe 'bake', type: :request do
             .to_return(
               body: File.open(Rails.root.join('spec/files/sample_badge_template.png')),
               status: 200,
-              headers: {'Content-Type' => 'image/png'}
+              headers: { 'Content-Type' => 'image/png' }
             )
         end
 
         it_behaves_like 'properly baked badge', :default
       end
     end
-  end 
+  end
 end
